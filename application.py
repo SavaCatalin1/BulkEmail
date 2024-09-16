@@ -1,5 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
+
 import smtplib
 from email.message import EmailMessage
 import os
@@ -15,6 +18,22 @@ app.config['SERVER_NAME'] = 'bulkemail-40pb.onrender.com'  # Replace with your d
 app.config['PREFERRED_URL_SCHEME'] = 'http'   # Use 'https' if your app is served over HTTPS
 app.config['APPLICATION_ROOT'] = '/'
 
+# Flask-Login setup
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'  # Redirect to login page if not logged in
+
+class User(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(150), unique=True, nullable=False)
+    password = db.Column(db.String(150), nullable=False)
+    role = db.Column(db.String(50), nullable=False, default='user')  # Default role is 'user'
+
+# Load user for Flask-Login
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
 email_sending_progress = {
     "sent": 0,
     "total": 0,
@@ -27,15 +46,23 @@ class Email(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     unsubscribed = db.Column(db.Boolean, default=False)
-#
+
+# # Initialize the database
+# with app.app_context():
+#     db.create_all()
+#     print("Database initialized!")
+
+
 # Home route - form to add new emails and send email campaigns
 @app.route('/')
+@login_required
 def index():
     emails = Email.query.filter_by(unsubscribed=False).all()
     return render_template('index.html', emails=emails)
 
 # Route to add a new email to the database
 @app.route('/add_email', methods=['POST'])
+@login_required
 def add_email():
     email_address = request.form['email']
     if email_address:
@@ -50,6 +77,7 @@ def add_email():
 
 # Route to send emails to all subscribers
 @app.route('/send_emails', methods=['POST'])
+@login_required
 def send_emails():
     global email_sending_progress
     email_sending_progress = {
@@ -196,6 +224,7 @@ def send_emails_from_list(email_list, subject, body, sender_email, sender_passwo
                 time.sleep(timeout)  # Wait before sending the next email
 
 @app.route('/email_sending_status')
+@login_required
 def email_sending_status():
     return render_template('email_sending_status.html', progress=email_sending_progress)
 
@@ -223,6 +252,7 @@ def unsubscribe_email():
     return render_template('unsubscribe_error.html', message="No email provided.")
 
 @app.route('/bulk_add_emails', methods=['POST'])
+@login_required
 def bulk_add_emails():
     # Path to your text file containing emails
     file_path = 'emails.txt'
@@ -259,6 +289,55 @@ def bulk_add_emails():
 
     return redirect(url_for('index'))
 
+# Route for user login
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        user = User.query.filter_by(username=username).first()
+        
+        if user and check_password_hash(user.password, password):
+            login_user(user)
+            flash('Login successful!', 'success')
+            return redirect(url_for('index'))
+        else:
+            flash('Invalid credentials. Please try again.', 'error')
+    
+    return render_template('login.html')
+
+# Route for logging out the user
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('You have been logged out.', 'info')
+    return redirect(url_for('login'))
+
+# @app.route('/add_user', methods=['GET', 'POST'])
+# def add_user():
+#     if request.method == 'POST':
+#         username = request.form['username']
+#         password = request.form['password']
+#         role = request.form.get('role', 'user')  # Default role is 'user'
+
+#         # Check if the username already exists
+#         existing_user = User.query.filter_by(username=username).first()
+#         if existing_user:
+#             flash('User already exists!', 'error')
+#             return redirect(url_for('add_user'))
+
+#         # Hash the password before storing it in the database
+#         hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
+        
+#         new_user = User(username=username, password=hashed_password, role=role)
+#         db.session.add(new_user)
+#         db.session.commit()
+        
+#         flash('User added successfully!', 'success')
+#         return redirect(url_for('index'))
+    
+#     return render_template('add_user.html')
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
