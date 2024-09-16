@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Sending Progress</title>
+    <meta http-equiv="refresh" content="5">
+</head>
+<body>
+    <h1>Email Sending Progress</h1>
+    <p>Sent: {{ progress.sent }} / {{ progress.total }}</p>
+    <p>Errors: {{ progress.errors }}</p>
+    
+    {% if progress.done %}
+        <p><strong>Done!</strong></p>
+    {% else %}
+        <p>Sending...</p>
+    {% endif %}
+</body>
+</html>
