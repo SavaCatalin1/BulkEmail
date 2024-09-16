@@ -27,7 +27,7 @@ class Email(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     unsubscribed = db.Column(db.Boolean, default=False)
-
+#
 # Home route - form to add new emails and send email campaigns
 @app.route('/')
 def index():
