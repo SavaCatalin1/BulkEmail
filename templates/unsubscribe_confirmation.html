@@ -4,9 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unsubscribed</title>
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='unsubscribe_confirmation.css') }}">
 </head>
 <body>
-    <h1>You have been unsubscribed</h1>
-    <p>{{ email }} has been removed from our mailing list.</p>
+    <div class="unsubscribe-container">
+        <h1>You have been unsubscribed</h1>
+        <p>{{ email }} has been removed from our mailing list.</p>
+        <a href="{{ url_for('index') }}" class="btn">Return to Home</a>
+    </div>
 </body>
 </html>

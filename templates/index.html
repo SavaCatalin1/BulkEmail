@@ -4,44 +4,50 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Email Campaign Manager</title>
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
   </head>
   <body>
-    <h1>Email Campaign Manager</h1>
+    <div class="container">
+      <h1>Email Campaign Manager</h1>
 
-    <form action="{{ url_for('bulk_add_emails') }}" method="post">
-      <button type="submit">Bulk Add Emails</button>
-    </form>
+      <!-- Form to bulk add emails -->
+      <form action="{{ url_for('bulk_add_emails') }}" method="post">
+        <button type="submit" class="btn">Bulk Add Emails</button>
+      </form>
 
-    <!-- Flash messages for feedback -->
-    {% with messages = get_flashed_messages(with_categories=true) %} {% if
-    messages %}
-    <ul>
-      {% for category, message in messages %}
-      <li class="{{ category }}">{{ message }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %} {% endwith %}
+      <!-- Flash messages for feedback -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <ul class="flash-messages">
+        {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% endwith %}
 
-    <!-- Form to add email -->
-    <form action="{{ url_for('add_email') }}" method="POST">
-      <input type="email" name="email" placeholder="Enter email" required />
-      <button type="submit">Add Email</button>
-    </form>
+      <!-- Form to add email -->
+      <form action="{{ url_for('add_email') }}" method="POST" class="email-form">
+        <input type="email" name="email" placeholder="Enter email" required />
+        <button type="submit" class="btn">Add Email</button>
+      </form>
 
-    <!-- List of emails -->
-    <h2>Email List</h2>
-    <ul>
-      {% for email in emails %}
-      <li>
-        {{ email.email }}
-        <a href="{{ url_for('unsubscribe', id=email.id) }}">Unsubscribe</a>
-      </li>
-      {% endfor %}
-    </ul>
+      <!-- List of emails -->
+      <h2>Email List</h2>
+      <ul class="email-list">
+        {% for email in emails %}
+        <li>
+          {{ email.email }}
+          <a href="{{ url_for('unsubscribe', id=email.id) }}" class="unsubscribe-link">Unsubscribe</a>
+        </li>
+        {% endfor %}
+      </ul>
 
-    <!-- Button to send emails -->
-    <form action="{{ url_for('send_emails') }}" method="POST">
-      <button type="submit">Send Emails</button>
-    </form>
+      <!-- Button to send emails -->
+      <form action="{{ url_for('send_emails') }}" method="POST">
+        <button type="submit" class="btn">Send Emails</button>
+      </form>
+    </div>
   </body>
 </html>

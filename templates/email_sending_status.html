@@ -4,17 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Email Sending Progress</title>
-    <meta http-equiv="refresh" content="5">
+    <meta http-equiv="refresh" content="5"> <!-- Refresh every 5 seconds -->
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='email_sending_status.css') }}">
 </head>
 <body>
-    <h1>Email Sending Progress</h1>
-    <p>Sent: {{ progress.sent }} / {{ progress.total }}</p>
-    <p>Errors: {{ progress.errors }}</p>
-    
-    {% if progress.done %}
-        <p><strong>Done!</strong></p>
-    {% else %}
-        <p>Sending...</p>
-    {% endif %}
+    <div class="progress-container">
+        <h1>Email Sending Progress</h1>
+        <div class="progress-info">
+            <p><strong>Sent:</strong> {{ progress.sent }} / {{ progress.total }}</p>
+            <p><strong>Errors:</strong> {{ progress.errors }}</p>
+            
+            {% if progress.done %}
+                <p class="status-done"><strong>Done!</strong></p>
+            {% else %}
+                <p class="status-sending">Sending...</p>
+            {% endif %}
+        </div>
+    </div>
 </body>
 </html>

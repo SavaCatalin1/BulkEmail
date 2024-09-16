@@ -1,0 +1,115 @@
+/* General styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #f4f4f9;
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  background-image: linear-gradient(120deg, #2980b9, #e74c3c);
+}
+
+.container {
+  background-color: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  min-height: 55rem;
+  max-height: 55rem;
+  text-align: center;
+}
+
+/* Header */
+h1 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+/* Buttons */
+.btn {
+  background-color: #2980b9;
+  color: white;
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px 0;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #1c5d88;
+}
+
+/* Input fields */
+input[type="email"] {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  transition: border-color 0.3s ease;
+  width: calc(100% - 22px);
+  margin: 10px 0;
+}
+
+input[type="email"]:focus {
+  border-color: #2980b9;
+}
+
+/* Flash messages */
+.flash-messages {
+  list-style-type: none;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.flash-messages li {
+  background-color: #e74c3c;
+  color: white;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+/* Email list */
+.email-list {
+  list-style-type: none;
+  padding: 0;
+  margin-bottom: 20px;
+  max-height: 30rem;
+  overflow-y: auto;
+}
+
+.email-list li {
+  background-color: #f4f4f9;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Unsubscribe link */
+.unsubscribe-link {
+  color: #e74c3c;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.unsubscribe-link:hover {
+  text-decoration: underline;
+}
