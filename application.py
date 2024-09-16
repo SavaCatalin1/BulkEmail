@@ -11,7 +11,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///emails.db'
 app.config['SECRET_KEY'] = 'supersecretkey'
 db = SQLAlchemy(app)
 
-app.config['SERVER_NAME'] = '127.0.0.1:5000'  # Replace with your domain if running in production
+app.config['SERVER_NAME'] = 'bulkemail-40pb.onrender.com'  # Replace with your domain if running in production
 app.config['PREFERRED_URL_SCHEME'] = 'http'   # Use 'https' if your app is served over HTTPS
 app.config['APPLICATION_ROOT'] = '/'
 
