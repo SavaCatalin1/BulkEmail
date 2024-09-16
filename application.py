@@ -223,4 +223,4 @@ def unsubscribe_email():
     return render_template('unsubscribe_error.html', message="No email provided.")
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
