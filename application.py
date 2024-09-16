@@ -223,4 +223,4 @@ def unsubscribe_email():
     return render_template('unsubscribe_error.html', message="No email provided.")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
