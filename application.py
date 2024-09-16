@@ -222,5 +222,43 @@ def unsubscribe_email():
             return render_template('unsubscribe_error.html', message="Email not found.")
     return render_template('unsubscribe_error.html', message="No email provided.")
 
+@app.route('/bulk_add_emails', methods=['POST'])
+def bulk_add_emails():
+    # Path to your text file containing emails
+    file_path = 'emails.txt'
+
+    # Check if the file exists
+    if not os.path.exists(file_path):
+        flash("Email file not found.", 'error')
+        return redirect(url_for('index'))
+
+    # Open the file and read emails
+    with open(file_path, 'r') as f:
+        emails = [line.strip() for line in f if line.strip()]
+
+    added_count = 0
+    already_exists_count = 0
+
+    # Add emails to the database
+    for email_address in emails:
+        # Check if email already exists in the database
+        existing_email = Email.query.filter_by(email=email_address).first()
+        if not existing_email:
+            new_email = Email(email=email_address)
+            db.session.add(new_email)
+            added_count += 1
+        else:
+            already_exists_count += 1
+
+    try:
+        db.session.commit()
+        flash(f"{added_count} emails added successfully, {already_exists_count} already existed.", 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash(f"An error occurred while adding emails: {str(e)}", 'error')
+
+    return redirect(url_for('index'))
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
