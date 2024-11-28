@@ -131,7 +131,7 @@ Telefon: 0771591747
 
 
 # Helper function to send emails
-def send_emails_from_list(email_list, subject, body, sender_email, sender_password, attachments, timeout=15):
+def send_emails_from_list(email_list, subject, body, sender_email, sender_password, attachments, timeout=5):
     with smtplib.SMTP_SSL('mail.atienergy.ro', 465) as smtp:
         smtp.login(sender_email, sender_password)
 
