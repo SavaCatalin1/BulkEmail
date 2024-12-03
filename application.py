@@ -14,7 +14,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///emails.db'
 app.config['SECRET_KEY'] = 'supersecretkey'
 db = SQLAlchemy(app)
 
-app.config['SERVER_NAME'] = 'bulkemail-40pb.onrender.com'  # Replace with your domain if running in production
+app.config['SERVER_NAME'] = '127.0.0.1:10000'  # Replace with your domain if running in production
 app.config['PREFERRED_URL_SCHEME'] = 'http'   # Use 'https' if your app is served over HTTPS
 app.config['APPLICATION_ROOT'] = '/'
 
@@ -92,22 +92,27 @@ def send_emails():
     subject = "Propunere de instalare a unui sistem de stocare a energiei electrice cu o capacitate utilizabilă de stocare a energiei electrice de cel puțin 5 kW prin PNRR, componenta REPowerEU"
     body = """
 Bună ziua,
+<br>
 
- 
+<br>
+<br>
 
 Dacă sunteți interesați să suplimentați instalația fotovoltaică existentă cu un sistem de stocare a energiei electrice cu o capacitate utilizabilă de stocare a energiei electrice de cel puțin 5 kW, prin societatea noastră, vă rugăm să ne trimiteți în replay documentele: copie a cărții de identitate, certificatul de racordare emis/actualizat, extras de carte funciară și, dacă este cazul, contract de ipotecă imobiliară și ultima dovadă a obligațiilor de plată. În cel mai scurt timp vă vom pune la dispoziție o ofertă tehnico-economică pe care, eventual, o vom discuta împreună în prealabil.
 
- 
-
+ <br>
+<br>
+<br>
 Vă rugăm să găsiți în atașament un extras din Ghidul Specific PNRR aferent Investiției I4 Schema de granturi sub formă de bonuri valorice pentru accelerarea utilizării energiei din surse regenerabile de către gospodării.
 
  
-
+<br><br>
  
 
 Departamentul Prosumatori SCM ATI ELECTRIC SRL
-
+<br>
+<br>
 Telefon: 0771591747
+<br>
 <img src="https://atienergy.ro/wp-content/uploads/2024/08/ATI-LOGO.png" alt="ATI ENERGY Logo" style="width: 150px; display: block;">
 
 """
@@ -141,23 +146,23 @@ def send_emails_from_list(email_list, subject, body, sender_email, sender_passwo
                 try:
                     email = email_entry.email
 
-                    # Create a personalized unsubscribe link
-                    unsubscribe_url = url_for('unsubscribe_email', email=email_entry.email, _external=True)
+                    # # Create a personalized unsubscribe link
+                    # unsubscribe_url = url_for('unsubscribe_email', email=email_entry.email, _external=True)
 
-                    # Modify the body to include the unsubscribe button
-                    personalized_body = body + f'''
-                    <p style="text-align: center; margin-top: 20px;">
-                        <a href="{unsubscribe_url}" style="background-color: #e74c3c; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">
-                            Unsubscribe
-                        </a>
-                    </p>
-                    '''
+                    # # Modify the body to include the unsubscribe button
+                    # personalized_body = body + f'''
+                    # <p style="text-align: center; margin-top: 20px;">
+                    #     <a href="{unsubscribe_url}" style="background-color: #e74c3c; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">
+                    #         Unsubscribe
+                    #     </a>
+                    # </p>
+                    # '''
 
                     msg = EmailMessage()
                     msg['Subject'] = subject
                     msg['From'] = sender_email
                     msg['To'] = email
-                    msg.add_alternative(personalized_body, subtype='html')
+                    msg.add_alternative(body, subtype='html')
 
                     # Add attachments
                     for file_path in attachments:
@@ -265,30 +270,30 @@ def logout():
     flash('You have been logged out.', 'info')
     return redirect(url_for('login'))
 
-# @app.route('/add_user', methods=['GET', 'POST'])
-# def add_user():
-#     if request.method == 'POST':
-#         username = request.form['username']
-#         password = request.form['password']
-#         role = request.form.get('role', 'user')  # Default role is 'user'
+@app.route('/add_user', methods=['GET', 'POST'])
+def add_user():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        role = request.form.get('role', 'user')  # Default role is 'user'
 
-#         # Check if the username already exists
-#         existing_user = User.query.filter_by(username=username).first()
-#         if existing_user:
-#             flash('User already exists!', 'error')
-#             return redirect(url_for('add_user'))
+        # Check if the username already exists
+        existing_user = User.query.filter_by(username=username).first()
+        if existing_user:
+            flash('User already exists!', 'error')
+            return redirect(url_for('add_user'))
 
-#         # Hash the password before storing it in the database
-#         hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
+        # Hash the password before storing it in the database
+        hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
         
-#         new_user = User(username=username, password=hashed_password, role=role)
-#         db.session.add(new_user)
-#         db.session.commit()
+        new_user = User(username=username, password=hashed_password, role=role)
+        db.session.add(new_user)
+        db.session.commit()
         
-#         flash('User added successfully!', 'success')
-#         return redirect(url_for('index'))
+        flash('User added successfully!', 'success')
+        return redirect(url_for('index'))
     
-#     return render_template('add_user.html')
+    return render_template('add_user.html')
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
