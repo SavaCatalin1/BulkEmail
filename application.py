@@ -89,37 +89,33 @@ def send_emails():
 
     sender_email = "vanzari@atienergy.ro"
     sender_password = "0#P)Q1RrE=cK"
-    subject = "Propunere de instalare a unui sistem de stocare a energiei electrice cu o capacitate utilizabilă de stocare a energiei electrice de cel puțin 5 kW prin PNRR, componenta REPowerEU"
+    subject = "AFM 2024"
     body = """
-Bună ziua,
+Buna ziua, va informam că AFM a publicat Lista instalatorilor validați în cadrul Programului privind instalarea de sisteme fotovoltaice pentru producerea de energie electrică, în vederea acoperirii necesarului de consum și livrării surplusului în rețeaua națională.
+<a href="https://afm.ro/main/media/comunicate_presa/2024/comunicat_presa_11122024.pdf">Link catre comunicatul de presa</a>
 <br>
-
+Societatea noastră o găsiți la:
 <br>
-<br>
-
-Dacă sunteți interesați să suplimentați instalația fotovoltaică existentă cu un sistem de stocare a energiei electrice cu o capacitate utilizabilă de stocare a energiei electrice de cel puțin 5 kW, prin societatea noastră, vă rugăm să ne trimiteți în replay documentele: copie a cărții de identitate, certificatul de racordare emis/actualizat, extras de carte funciară și, dacă este cazul, contract de ipotecă imobiliară și ultima dovadă a obligațiilor de plată. În cel mai scurt timp vă vom pune la dispoziție o ofertă tehnico-economică pe care, eventual, o vom discuta împreună în prealabil.
-
- <br>
+Poziția: 356
 <br>
 <br>
-Vă rugăm să găsiți în atașament un extras din Ghidul Specific PNRR aferent Investiției I4 Schema de granturi sub formă de bonuri valorice pentru accelerarea utilizării energiei din surse regenerabile de către gospodării.
-
- 
-<br><br>
- 
-
-Departamentul Prosumatori SCM ATI ELECTRIC SRL
+S.C. SCM ATI ELECTRIC S.R.L.
 <br>
+CIF societate: 31564964
 <br>
-Telefon: 0771591747
+Județ: Ilfov, 
+<br>
+Localitate: ORAS VOLUNTARI, 
+<br>
+Telefon: 0728507085/ 0729763000 / 0374020514 
+<br>
+e-mail: office@atienergy.ro
 <br>
 <img src="https://atienergy.ro/wp-content/uploads/2024/08/ATI-LOGO.png" alt="ATI ENERGY Logo" style="width: 150px; display: block;">
 
 """
     attachments = [
-        'Informare.docx',
-        '1.-Ghidul-solicitantului_Investitia-4_.pdf',
-        'Ordin_modificare_ghid.pdf'
+        'comunicat_afm.pdf'
     ]
     
     # Fetch all subscribed emails
